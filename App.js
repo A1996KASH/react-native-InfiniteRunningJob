@@ -13,15 +13,20 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  Platform,
   TouchableOpacity,
   Linking,
   View,
+  NativeModules,
+  PermissionsAndroid,
+  NativeEventEmitter,
 } from 'react-native';
-
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import BleManager from 'react-native-ble-manager';
 import BackgroundService from 'react-native-background-actions';
+
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
+const BleManagerModule = NativeModules.BleManager;
+const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 
 const options = {
   taskName: 'Example',
@@ -37,7 +42,32 @@ const options = {
     delay: 3000,
   },
 };
-
+BleManager.start({showAlert: false}).then(() => {
+  // Success code
+  console.log('Module initialized');
+});
+BleManager.scan([], 10, true).then(data => {
+  // Success code
+  console.log('Scan started');
+});
+async function discover() {
+  const data = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    {
+      title: 'Permission Localisation Bluetooth',
+      message: 'Requirement for Bluetooth',
+      buttonNeutral: 'Later',
+      buttonNegative: 'Cancel',
+      buttonPositive: 'OK',
+    },
+  );
+  if (data === 'granted') {
+    BleManager.getDiscoveredPeripherals().then(results => {
+      console.log(results);
+    });
+  }
+}
+discover();
 function handleOpenURL(evt) {
   console.log(evt.url);
   // do something with the url

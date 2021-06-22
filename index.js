@@ -10,9 +10,13 @@ import RNAndroidNotificationListener, {
 } from 'react-native-android-notification-listener';
 import PushNotification from 'react-native-push-notification';
 // To check if the user has permission
-const status = RNAndroidNotificationListener.getPermissionStatus();
-console.log(status); // Result can be 'authorized', 'denied' or 'unknown'
-RNAndroidNotificationListener.requestPermission();
+const getStatus = async () => {
+  const status = await RNAndroidNotificationListener.getPermissionStatus();
+  if (status !== 'authorized') {
+    RNAndroidNotificationListener.requestPermission();
+  }
+}; // Result can be 'authorized', 'denied' or 'unknown'
+getStatus();
 const headlessNotificationListener = async ({notification}) => {
   const notif = JSON.parse(notification);
   if (notification) {
