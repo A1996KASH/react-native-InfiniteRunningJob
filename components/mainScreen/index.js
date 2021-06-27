@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, ImageBackground} from 'react-native';
+import ButtonStyle from '../styledButtons/';
 import styles from './style';
 const MainScreen = () => {
   return (
@@ -13,6 +14,9 @@ const MainScreen = () => {
         <Text style={styles.subTitles}>
           The Universal Interface for Your Wrist
         </Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <ButtonStyle type="primary" />
       </View>
     </View>
   );

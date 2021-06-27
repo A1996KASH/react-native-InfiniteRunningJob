@@ -15,6 +15,7 @@
     "react-native-android-notification-listener": "^3.1.2",
     "react-native-background-actions": "^2.6.1",
     "react-native-ble-manager": "^7.5.0",
+    "react-native-ble-plx": "^2.0.2",
     "react-native-push-notification": "^7.3.2"
   },
   "devDependencies": {
