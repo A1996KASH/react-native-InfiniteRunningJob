@@ -1,5 +1,7 @@
 import BleManager from 'react-native-ble-manager';
 import {PermissionsAndroid, NativeAppEventEmitter} from 'react-native';
+import {Buffer} from 'buffer';
+import {backgroundJob} from './backGroundJob';
 export const BleScanner = async () => {
   //const BleManagerModule = NativeModules.BleManager;
   //const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
@@ -11,6 +13,16 @@ export const BleScanner = async () => {
         async data => {
           if (data.name === 'GyroPalm Wearable') {
             console.log('device found connecting');
+            BleManager.connect(data.id)
+              .then(() => {
+                // Success code
+                console.log('connected');
+                backgroundJob();
+              })
+              .catch(error => {
+                // Failure code
+                console.log(error);
+              });
             await BleManager.stopScan();
           }
           // Name of peripheral device
@@ -32,7 +44,10 @@ export const BleScanner = async () => {
         },
       );
       if (data === 'granted') {
-       // const data = await BleManager.getDiscoveredPeripherals();
+        //   setTimeout(5000,()=>{
+        //     await BleManager.getDiscoveredPeripherals();
+        //   })
+        //  // const data =
       }
     })
     .catch(error => {

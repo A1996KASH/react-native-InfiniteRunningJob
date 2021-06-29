@@ -13,7 +13,7 @@ const button = props => {
         style={[styles.button, {backgroundColor}]}
         onPress={() => {
           BleScanner();
-          //backgroundJob();
+          notificationListner();
         }}>
         <Text style={styles.text}>Scan Devices</Text>
       </Pressable>
